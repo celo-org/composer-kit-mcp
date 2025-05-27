@@ -17,6 +17,142 @@ cd composer-kit-mcp
 pip install -e .
 ```
 
+## MCP Client Setup
+
+### Setting up in Cursor
+
+1. **Install the MCP server** (if not already done):
+
+   ```bash
+   pip install composer-kit-mcp
+   ```
+
+2. **Configure Cursor** by adding the MCP server to your Cursor settings:
+
+   - Open Cursor Settings (Cmd/Ctrl + ,)
+   - Navigate to "Features" → "Model Context Protocol"
+   - Add a new MCP server with the following configuration:
+
+   ```json
+   {
+     "mcpServers": {
+       "composer-kit-mcp": {
+         "command": "uvx",
+         "args": ["composer-kit-mcp"]
+       }
+     }
+   }
+   ```
+
+3. **Restart Cursor** to load the MCP server
+
+4. **Verify the setup** by asking Cursor about Composer Kit components:
+   - "What Composer Kit components are available?"
+   - "Show me how to use the Wallet component"
+   - "Search for payment-related components"
+
+### Setting up in Claude Desktop
+
+1. **Install the MCP server** (if not already done):
+
+   ```bash
+   pip install composer-kit-mcp
+   ```
+
+2. **Locate your Claude Desktop config file**:
+
+   - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+
+3. **Edit the config file** to add the MCP server:
+
+   ```json
+   {
+     "mcpServers": {
+       "composer-kit-mcp": {
+         "command": "uvx",
+         "args": ["composer-kit-mcp"]
+       }
+     }
+   }
+   ```
+
+   If the file doesn't exist, create it with the above content.
+
+4. **Restart Claude Desktop** to load the MCP server
+
+5. **Verify the setup** by asking Claude about Composer Kit:
+   - Look for the 🔌 icon in the chat interface indicating MCP tools are available
+   - Ask: "What Composer Kit components can you help me with?"
+   - Try: "Show me examples of using the Payment component"
+
+### Alternative Installation Methods
+
+#### Using pipx (Recommended for isolation)
+
+```bash
+# Install pipx if you haven't already
+pip install pipx
+
+# Install composer-kit-mcp in an isolated environment
+pipx install composer-kit-mcp
+
+# The command will be available globally
+composer-kit-mcp
+```
+
+#### Using virtual environment
+
+```bash
+# Create a virtual environment
+python -m venv composer-kit-mcp-env
+source composer-kit-mcp-env/bin/activate  # On Windows: composer-kit-mcp-env\Scripts\activate
+
+# Install the package
+pip install composer-kit-mcp
+
+# Use the full path in your MCP config
+# e.g., /path/to/composer-kit-mcp-env/bin/composer-kit-mcp
+```
+
+### Troubleshooting
+
+#### Common Issues
+
+1. **Command not found**: Make sure the package is installed and the command is in your PATH
+
+   ```bash
+   which composer-kit-mcp  # Should show the path to the command
+   ```
+
+2. **Permission errors**: Try installing with `--user` flag or use pipx
+
+   ```bash
+   pip install --user composer-kit-mcp
+   ```
+
+3. **MCP server not connecting**: Check that the command path in your config is correct
+
+   ```bash
+   composer-kit-mcp  # Should start the server (will wait for input)
+   ```
+
+4. **Python version issues**: Ensure you're using Python 3.11 or higher
+   ```bash
+   python --version  # Should be 3.11+
+   ```
+
+#### Debugging
+
+To test if the MCP server is working correctly:
+
+```bash
+# Test the server directly
+echo '{"jsonrpc": "2.0", "id": 1, "method": "tools/list", "params": {}}' | composer-kit-mcp
+```
+
+This should return a JSON response with the available tools.
+
 ## Usage
 
 ### Running the Server
