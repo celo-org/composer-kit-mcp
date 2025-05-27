@@ -7,7 +7,7 @@ A Model Context Protocol (MCP) server for accessing Composer Kit UI components d
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/celo-org/composer-kit-mcp
 cd composer-kit-mcp
 ```
 
