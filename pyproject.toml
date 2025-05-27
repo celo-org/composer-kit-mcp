@@ -1,7 +1,7 @@
 [project]
 name = "composer_kit_mcp"
 version = "0.1.0"
-description = "A Model Context Protocol (MCP) server for Composer Kit UI components - helping LLMs build Celo dApps with ease"
+description = "A Model Context Protocol (MCP) server for Composer Kit UI components documentation and examples"
 readme = "README.md"
 authors = [
     { name = "viral-sangani", email = "viral.sangani2011@gmail.com" }
@@ -9,15 +9,9 @@ authors = [
 requires-python = ">=3.11"
 dependencies = [
     "mcp>=1.2.0",
-    "httpx>=0.27.0",
     "pydantic>=2.0.0",
-    "python-dotenv>=1.0.0",
-    "asyncio-throttle>=1.0.0",
-    "aiofiles>=24.0.0",
-    "beautifulsoup4>=4.12.0",
-    "lxml>=5.0.0",
 ]
-keywords = ["mcp", "composer-kit", "celo", "ui", "react", "web3", "ai", "llm"]
+keywords = ["mcp", "composer-kit", "ui", "components", "react", "web3", "celo"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
@@ -68,8 +62,4 @@ disallow_untyped_defs = true
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
-testpaths = ["tests"]
-filterwarnings = [
-    "ignore::DeprecationWarning:httpx.*",
-    "ignore::DeprecationWarning:pydantic.*",
-] 
+testpaths = ["tests"] 

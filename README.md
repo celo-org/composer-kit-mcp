@@ -1,10 +1,6 @@
 # Composer Kit MCP Server
 
-A Model Context Protocol (MCP) server for Composer Kit UI components. This server provides comprehensive access to Composer Kit components, examples, and documentation, enabling LLMs to help developers build beautiful Celo dApps with ease.
-
-## What is Composer Kit?
-
-Composer Kit (@composer-kit/ui) is a ready-to-use React component library designed specifically for building web3 applications on the Celo blockchain. It provides a comprehensive set of modular, accessible, and customizable UI components that make it easy to integrate wallet connections, token balances, payments, NFT interactions, and more into your dApp.
+A Model Context Protocol (MCP) server for accessing Composer Kit UI components documentation, examples, and usage information. This server provides comprehensive access to the Composer Kit React component library designed for building web3 applications on the Celo blockchain.
 
 ## Installation
 
@@ -21,12 +17,6 @@ cd composer-kit-mcp
 pip install -e .
 ```
 
-3. Set up environment variables (optional):
-
-```bash
-export GITHUB_TOKEN="your_github_token"  # For higher rate limits
-```
-
 ## Usage
 
 ### Running the Server
@@ -41,151 +31,129 @@ composer-kit-mcp
 
 ### Available Tools
 
-#### Component Discovery
+#### Component Information
 
 1. **list_components**
-   - List all available Composer Kit components
-   - No parameters required
-   - Returns: Array of component names and descriptions
 
-#### Component Code Access
+   - List all available Composer Kit components with their descriptions and categories
+   - No parameters required
 
 2. **get_component**
 
-   - Get the source code for a specific component
-   - Parameters: `component_name` (string)
-   - Returns: Component source code with imports and exports
+   - Get detailed information about a specific component, including source code, props, and usage information
+   - Parameters: `component_name` (e.g., 'button', 'wallet', 'payment', 'swap')
 
 3. **get_component_example**
-   - Get example usage code for a component
-   - Parameters: `component_name` (string), `example_type` (optional)
-   - Returns: Example code showing how to use the component
 
-#### Documentation and Setup
+   - Get example usage code for a specific component with real-world examples
+   - Parameters: `component_name`, `example_type` (optional: 'basic', 'advanced', 'with-props')
 
-4. **get_installation_guide**
+4. **search_components**
 
-   - Get installation instructions for Composer Kit
-   - Parameters: `package_manager` (optional: npm, yarn, pnpm, bun)
-   - Returns: Step-by-step installation guide
+   - Search for components by name, description, or functionality
+   - Parameters: `query` (e.g., 'wallet', 'payment', 'token', 'nft')
 
 5. **get_component_props**
+   - Get detailed prop information for a specific component, including types, descriptions, and requirements
+   - Parameters: `component_name`
 
-   - Get component props and API documentation
-   - Parameters: `component_name` (string)
-   - Returns: Component props, types, and usage information
+#### Installation and Setup
 
-6. **search_components**
-   - Search for components by functionality or name
-   - Parameters: `query` (string)
-   - Returns: Matching components with descriptions
+6. **get_installation_guide**
+
+   - Get installation instructions for Composer Kit, including setup steps and configuration
+   - Parameters: `package_manager` (optional: 'npm', 'yarn', 'pnpm', 'bun')
+
+7. **get_components_by_category**
+   - Get all components in a specific category
+   - Parameters: `category` (e.g., 'Core Components', 'Wallet Integration', 'Payment & Transactions')
 
 ## Available Components
 
-Composer Kit provides the following component categories:
-
 ### Core Components
 
-- **Address**: Display Ethereum addresses with formatting options
-- **Balance**: Show token balances with proper formatting
-- **Identity**: Display user identity information
+- **Address**: Display Ethereum addresses with truncation and copy functionality
+- **Balance**: Display and manage token balances with precision control
+- **Identity**: Display user information with address, name, balance, and social links
 
 ### Wallet Integration
 
-- **Wallet**: Wallet connection and management
-- **Connect**: Wallet connection button with avatar and name display
+- **Wallet**: Wallet connection and user information display
+- **Connect**: Wallet connection button with callback support
 
 ### Payment & Transactions
 
-- **Payment**: Payment processing with dialog and error handling
-- **Transaction**: Blockchain transaction management with status tracking
-- **Swap**: Token swapping interface with toggle and selection
+- **Payment**: Send payments with built-in dialog and error handling
+- **Transaction**: Facilitate blockchain transactions with status tracking
+- **Swap**: Token exchange interface with swappable token selection
 
 ### Token Management
 
-- **TokenSelect**: Token selection dropdown with search functionality
+- **TokenSelect**: Search and select tokens from a list with filtering
 
 ### NFT Components
 
-- **NFTCard**: Display NFT information and metadata
+- **NFT**: Display NFT details and provide minting interface
+- **NFTCard**: Card layout for NFT display
+- **NFTImage**: NFT image display component
+- **NFTMeta**: NFT metadata display
 - **NFTMint**: NFT minting interface
-
-## Architecture
-
-The server is built with a modular architecture:
-
-```
-src/composer_kit_mcp/
-├── components/         # Component data access and management
-│   ├── models.py      # Component data models
-│   ├── service.py     # Component service (GitHub API integration)
-│   └── cache.py       # Caching for performance
-├── examples/          # Example code management
-│   ├── models.py      # Example data models
-│   └── service.py     # Example service
-├── docs/              # Documentation access
-│   ├── models.py      # Documentation models
-│   └── service.py     # Documentation service
-├── server.py          # Main MCP server
-└── utils.py           # Utility functions
-```
 
 ## Key Features
 
-### Component Support
+### Component Documentation
 
-- **Complete Library**: Access to all Composer Kit components
-- **Source Code**: Get actual component implementation
-- **Props Documentation**: Detailed component API information
-- **Type Definitions**: TypeScript type information
-
-### Example Integration
-
-- **Real Examples**: Access to actual examples from the docs
-- **Multiple Patterns**: Different usage patterns for each component
-- **Best Practices**: Examples following Composer Kit conventions
-- **Copy-Paste Ready**: Examples ready for immediate use
-
-### Documentation Access
-
+- **Complete API Reference**: Detailed prop information for all components
+- **Usage Examples**: Real-world code examples for each component
 - **Installation Guides**: Step-by-step setup instructions
-- **Component Docs**: Comprehensive component documentation
-- **API Reference**: Complete props and methods documentation
-- **Usage Patterns**: Common usage patterns and best practices
+- **Category Organization**: Components organized by functionality
 
-### Performance Optimization
+### Search and Discovery
 
-- **Intelligent Caching**: Cache component data and examples
-- **Rate Limiting**: Respect GitHub API rate limits
-- **Efficient Fetching**: Minimize API calls with smart caching
-- **Error Handling**: Graceful degradation for network issues
+- **Semantic Search**: Find components by functionality or use case
+- **Category Filtering**: Browse components by category
+- **Prop Documentation**: Detailed type information and requirements
 
-## Error Handling
+### Code Examples
 
-The server includes comprehensive error handling:
+- **Basic Usage**: Simple implementation examples
+- **Advanced Patterns**: Complex usage scenarios
+- **Best Practices**: Recommended implementation patterns
 
-- Input validation for all parameters
-- Network error handling with retries
-- GitHub API rate limit handling
-- Graceful degradation for missing components
-- Detailed error messages for debugging
+## Architecture
 
-## Caching
+The server provides access to hardcoded Composer Kit component data:
 
-Performance optimization through caching:
+```
+src/composer_kit_mcp/
+├── components/         # Component data and models
+│   ├── data.py        # Hardcoded component information
+│   └── models.py      # Pydantic models for components
+├── server.py          # Main MCP server
+└── __init__.py        # Package initialization
+```
 
-- Component source code caching
-- Example code caching
-- Documentation caching
-- GitHub API response caching with appropriate TTLs
+## Component Categories
 
-## Security Considerations
+### Core Components
 
-- Read-only operations by default
-- No sensitive data handling
-- Input validation and sanitization
-- Rate limiting for external API calls
-- Optional GitHub token for higher rate limits
+Essential UI components for basic functionality
+
+### Wallet Integration
+
+Components for wallet connection and user management
+
+### Payment & Transactions
+
+Components for handling payments and blockchain transactions
+
+### Token Management
+
+Components for token selection and management
+
+### NFT Components
+
+Components for NFT display and interaction
 
 ## Development
 
@@ -208,29 +176,21 @@ ruff check .
 mypy .
 ```
 
+## License
+
+MIT License - see LICENSE file for details.
+
 ## Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Add tests for new functionality
-5. Run the test suite
-6. Submit a pull request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Related Projects
-
-- [Composer Kit](https://github.com/celo-org/composer-kit) - The UI library this MCP server provides access to
-- [Celo MCP](https://github.com/viral-sangani/celo-mcp) - MCP server for Celo blockchain interactions
-- [Model Context Protocol](https://modelcontextprotocol.io/) - The protocol specification
+4. Add tests if applicable
+5. Submit a pull request
 
 ## Support
 
 For issues and questions:
 
-- Open an issue on GitHub
-- Check the Composer Kit documentation
-- Join the Celo developer community
+- GitHub Issues: [composer-kit-mcp/issues](https://github.com/viral-sangani/composer-kit-mcp/issues)
+- Documentation: [Composer Kit Docs](https://github.com/celo-org/composer-kit)

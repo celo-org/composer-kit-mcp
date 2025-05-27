@@ -1,12 +1,14 @@
-"""Components package for Composer Kit MCP server."""
+"""Composer Kit components data and models."""
 
-from .models import Component, ComponentExample, ComponentProp, ComponentRegistry
-from .service import ComponentService
+from .data import COMPONENTS, CATEGORIES, INSTALLATION_GUIDES
+from .models import Component, ComponentProp, ComponentExample, InstallationGuide
 
 __all__ = [
+    "COMPONENTS",
+    "CATEGORIES",
+    "INSTALLATION_GUIDES",
     "Component",
-    "ComponentExample",
     "ComponentProp",
-    "ComponentRegistry",
-    "ComponentService",
+    "ComponentExample",
+    "InstallationGuide",
 ]
