@@ -32,9 +32,7 @@ def update_version(new_version):
     content = pyproject_path.read_text()
 
     # Update only the project version (not python_version or target-version)
-    updated_content = re.sub(
-        r'^version = "[^"]+"', f'version = "{new_version}"', content, flags=re.MULTILINE
-    )
+    updated_content = re.sub(r'^version = "[^"]+"', f'version = "{new_version}"', content, flags=re.MULTILINE)
 
     pyproject_path.write_text(updated_content)
     print(f"Updated version to {new_version} in pyproject.toml")
@@ -111,9 +109,7 @@ def main():
         choices=["current", "patch", "minor", "major", "custom"],
         help="Action to perform",
     )
-    parser.add_argument(
-        "--version", help="Custom version (required for 'custom' action)"
-    )
+    parser.add_argument("--version", help="Custom version (required for 'custom' action)")
     parser.add_argument(
         "--dry-run",
         action="store_true",
