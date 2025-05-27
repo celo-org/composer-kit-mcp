@@ -1,4 +1,4 @@
-"""Composer Kit MCP Server - A Model Context Protocol server for Composer Kit UI components."""
+"""Composer Kit MCP Server - A Model Context Protocol server for Composer Kit UI."""
 
 __version__ = "0.1.0"
 __author__ = "viral-sangani"

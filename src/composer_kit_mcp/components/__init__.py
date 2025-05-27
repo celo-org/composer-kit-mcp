@@ -1,7 +1,7 @@
 """Composer Kit components data and models."""
 
-from .data import COMPONENTS, CATEGORIES, INSTALLATION_GUIDES
-from .models import Component, ComponentProp, ComponentExample, InstallationGuide
+from .data import CATEGORIES, COMPONENTS, INSTALLATION_GUIDES
+from .models import Component, ComponentExample, ComponentProp, InstallationGuide
 
 __all__ = [
     "COMPONENTS",

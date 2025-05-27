@@ -3,27 +3,26 @@
 import asyncio
 import json
 import logging
-from typing import Any, List, Optional
+from typing import Any
 
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
 from mcp.types import TextContent, Tool
 
-from .components.data import COMPONENTS, CATEGORIES, INSTALLATION_GUIDES
+from .components.data import CATEGORIES, COMPONENTS, INSTALLATION_GUIDES
 from .components.models import (
     Component,
     ComponentSearchResult,
     ComponentsResponse,
-    InstallationGuide,
 )
 
 logger = logging.getLogger(__name__)
 
 # Initialize server
-server = Server("composer-kit-mcp")
+server: Server = Server("composer-kit-mcp")
 
 
-def search_components(query: str) -> List[ComponentSearchResult]:
+def search_components(query: str) -> list[ComponentSearchResult]:
     """Search components by name, description, or functionality."""
     results = []
     query_lower = query.lower()
@@ -43,10 +42,7 @@ def search_components(query: str) -> List[ComponentSearchResult]:
             matching_fields.append("description")
 
         # Check detailed description match
-        if (
-            component.detailed_description
-            and query_lower in component.detailed_description.lower()
-        ):
+        if component.detailed_description and query_lower in component.detailed_description.lower():
             relevance_score += 0.6
             matching_fields.append("detailed_description")
 
@@ -64,10 +60,7 @@ def search_components(query: str) -> List[ComponentSearchResult]:
 
         # Check props match
         for prop in component.props:
-            if (
-                query_lower in prop.name.lower()
-                or query_lower in prop.description.lower()
-            ):
+            if query_lower in prop.name.lower() or query_lower in prop.description.lower():
                 relevance_score += 0.3
                 matching_fields.append("props")
                 break
@@ -86,7 +79,7 @@ def search_components(query: str) -> List[ComponentSearchResult]:
     return results
 
 
-def get_component_by_name(name: str) -> Optional[Component]:
+def get_component_by_name(name: str) -> Component | None:
     """Get a component by its name (case-insensitive)."""
     name_lower = name.lower()
     for component in COMPONENTS:
@@ -95,7 +88,7 @@ def get_component_by_name(name: str) -> Optional[Component]:
     return None
 
 
-def get_components_by_category(category: str) -> List[Component]:
+def get_components_by_category(category: str) -> list[Component]:
     """Get all components in a specific category."""
     return [comp for comp in COMPONENTS if comp.category.lower() == category.lower()]
 
@@ -124,8 +117,7 @@ async def list_tools() -> list[Tool]:
                     "component_name": {
                         "type": "string",
                         "description": (
-                            "The name of the component to retrieve "
-                            "(e.g., 'button', 'wallet', 'payment', 'swap')"
+                            "The name of the component to retrieve " "(e.g., 'button', 'wallet', 'payment', 'swap')"
                         ),
                     }
                 },
@@ -148,8 +140,7 @@ async def list_tools() -> list[Tool]:
                     "example_type": {
                         "type": "string",
                         "description": (
-                            "Optional: specific type of example "
-                            "(e.g., 'basic', 'advanced', 'with-props')"
+                            "Optional: specific type of example " "(e.g., 'basic', 'advanced', 'with-props')"
                         ),
                     },
                 },
@@ -167,9 +158,7 @@ async def list_tools() -> list[Tool]:
                 "properties": {
                     "query": {
                         "type": "string",
-                        "description": (
-                            "Search query (e.g., 'wallet', 'payment', 'token', 'nft')"
-                        ),
+                        "description": ("Search query (e.g., 'wallet', 'payment', 'token', 'nft')"),
                     }
                 },
                 "required": ["query"],
@@ -205,8 +194,7 @@ async def list_tools() -> list[Tool]:
                         "type": "string",
                         "enum": ["npm", "yarn", "pnpm", "bun"],
                         "description": (
-                            "Package manager to use (npm, yarn, pnpm, bun). "
-                            "Defaults to npm if not specified."
+                            "Package manager to use (npm, yarn, pnpm, bun). " "Defaults to npm if not specified."
                         ),
                     }
                 },
@@ -320,9 +308,7 @@ async def call_tool(name: str, arguments: dict[str, Any]) -> list[TextContent]:
             return [
                 TextContent(
                     type="text",
-                    text=json.dumps(
-                        [result.model_dump() for result in results], indent=2
-                    ),
+                    text=json.dumps([result.model_dump() for result in results], indent=2),
                 )
             ]
 
@@ -341,9 +327,7 @@ async def call_tool(name: str, arguments: dict[str, Any]) -> list[TextContent]:
             return [
                 TextContent(
                     type="text",
-                    text=json.dumps(
-                        [prop.model_dump() for prop in component.props], indent=2
-                    ),
+                    text=json.dumps([prop.model_dump() for prop in component.props], indent=2),
                 )
             ]
 
@@ -381,9 +365,7 @@ async def call_tool(name: str, arguments: dict[str, Any]) -> list[TextContent]:
             return [
                 TextContent(
                     type="text",
-                    text=json.dumps(
-                        [comp.model_dump() for comp in components], indent=2
-                    ),
+                    text=json.dumps([comp.model_dump() for comp in components], indent=2),
                 )
             ]
 
@@ -395,7 +377,7 @@ async def call_tool(name: str, arguments: dict[str, Any]) -> list[TextContent]:
         return [TextContent(type="text", text=f"Error: {str(e)}")]
 
 
-async def main():
+async def main() -> None:
     """Main server function."""
     logger.info("Starting Composer Kit MCP Server")
     logger.info(f"Available components: {len(COMPONENTS)}")
@@ -403,12 +385,10 @@ async def main():
 
     # Run the server
     async with stdio_server() as (read_stream, write_stream):
-        await server.run(
-            read_stream, write_stream, server.create_initialization_options()
-        )
+        await server.run(read_stream, write_stream, server.create_initialization_options())
 
 
-def main_sync():
+def main_sync() -> None:
     """Synchronous main function for CLI entry point."""
     asyncio.run(main())
 

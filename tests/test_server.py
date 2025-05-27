@@ -1,11 +1,10 @@
 """Tests for the Composer Kit MCP server."""
 
-import pytest
-from composer_kit_mcp.components.data import COMPONENTS, CATEGORIES
+from composer_kit_mcp.components.data import CATEGORIES, COMPONENTS
 from composer_kit_mcp.server import (
-    search_components,
     get_component_by_name,
     get_components_by_category,
+    search_components,
 )
 
 
@@ -103,9 +102,7 @@ def test_component_props():
     assert "address" in prop_names
 
     # Check that required prop is marked as required
-    address_prop = next(
-        prop for prop in address_component.props if prop.name == "address"
-    )
+    address_prop = next(prop for prop in address_component.props if prop.name == "address")
     assert address_prop.required is True
 
 

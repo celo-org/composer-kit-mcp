@@ -1,6 +1,6 @@
 """Hardcoded Composer Kit component data."""
 
-from .models import Component, ComponentProp, ComponentExample, InstallationGuide
+from .models import Component, ComponentExample, ComponentProp, InstallationGuide
 
 # Installation guides for different package managers
 INSTALLATION_GUIDES = {
