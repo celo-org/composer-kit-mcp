@@ -346,9 +346,10 @@ async def call_tool(name: str, arguments: dict[str, Any]) -> List[TextContent]:
 
         elif name == "search_components":
             query = arguments.get("query")
-            if not query:
+            if query is None:
                 return [TextContent(type="text", text="Error: query is required")]
 
+            # Allow empty string queries - they should return empty results
             components = await component_service.search_components(query)
 
             result = {

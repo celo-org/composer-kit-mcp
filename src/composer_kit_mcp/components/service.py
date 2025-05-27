@@ -386,7 +386,7 @@ export default function {component_display_name}Example() {{
             registry.last_updated = datetime.now()
 
             # Cache the registry
-            self.cache.set(cache_key, registry.dict(), ttl=3600)  # 1 hour cache
+            self.cache.set(cache_key, registry.model_dump(), ttl=3600)  # 1 hour cache
 
         except Exception as e:
             logger.error(f"Failed to build component registry: {e}")

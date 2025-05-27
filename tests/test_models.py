@@ -53,7 +53,7 @@ class TestComponentProp:
             required=True,
         )
 
-        prop_dict = prop.dict()
+        prop_dict = prop.model_dump()
         assert prop_dict["name"] == "test"
         assert prop_dict["type"] == "string"
         assert prop_dict["description"] == "Test prop"
@@ -167,7 +167,7 @@ class TestComponent:
 
     def test_component_dict_conversion(self, sample_component):
         """Test converting Component to dict."""
-        component_dict = sample_component.dict()
+        component_dict = sample_component.model_dump()
 
         assert component_dict["name"] == "test-component"
         assert component_dict["display_name"] == "Test Component"
@@ -288,7 +288,7 @@ class TestComponentRegistry:
 
     def test_registry_dict_conversion(self, sample_registry):
         """Test converting ComponentRegistry to dict."""
-        registry_dict = sample_registry.dict()
+        registry_dict = sample_registry.model_dump()
 
         assert "components" in registry_dict
         assert "categories" in registry_dict
@@ -324,15 +324,13 @@ class TestComponentRegistry:
 
     def test_empty_search(self, sample_registry):
         """Test search with empty query."""
-        # Empty string should return no results (based on actual implementation)
+        # Empty string should return no results
         results = sample_registry.search_components("")
-        # The actual implementation returns all components for empty query
-        # This is the expected behavior, so we adjust the test
-        assert len(results) >= 0  # Allow for either behavior
+        assert len(results) == 0
 
         # Test with whitespace only
         results = sample_registry.search_components("   ")
-        assert len(results) >= 0  # Allow for either behavior
+        assert len(results) == 0
 
     def test_partial_matches(self, sample_registry):
         """Test partial string matches in search."""

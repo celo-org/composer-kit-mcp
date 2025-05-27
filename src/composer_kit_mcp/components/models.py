@@ -62,6 +62,10 @@ class ComponentRegistry(BaseModel):
 
     def search_components(self, query: str) -> List[Component]:
         """Search components by name or description."""
+        # Return empty results for empty queries
+        if not query.strip():
+            return []
+
         query_lower = query.lower()
         results = []
 
