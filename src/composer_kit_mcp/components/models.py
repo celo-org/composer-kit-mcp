@@ -11,6 +11,7 @@ class ComponentProp(BaseModel):
     description: str = Field(description="Description of what the prop does")
     required: bool = Field(default=False, description="Whether the prop is required")
     default: str | None = Field(default=None, description="Default value if any")
+    supports_className: bool = Field(default=True, description="Whether this prop supports className")
 
 
 class ComponentExample(BaseModel):
@@ -33,6 +34,7 @@ class Component(BaseModel):
     examples: list[ComponentExample] = Field(default_factory=list, description="Usage examples")
     import_path: str = Field(description="Import path for the component")
     subcomponents: list[str] = Field(default_factory=list, description="List of subcomponent names")
+    supports_className: bool = Field(default=True, description="Whether this component supports className prop")
 
 
 class InstallationGuide(BaseModel):
@@ -58,3 +60,52 @@ class ComponentsResponse(BaseModel):
     components: list[Component] = Field(description="List of all components")
     categories: list[str] = Field(description="List of all categories")
     total_count: int = Field(description="Total number of components")
+
+
+# New models for Celo Composer support
+
+
+class CeloComposerTemplate(BaseModel):
+    """Model for a Celo Composer template."""
+
+    name: str = Field(description="Template name")
+    description: str = Field(description="Template description")
+    use_cases: list[str] = Field(description="Common use cases for this template")
+    features: list[str] = Field(description="Key features of this template")
+    documentation_url: str | None = Field(default=None, description="Link to template documentation")
+
+
+class CeloComposerFramework(BaseModel):
+    """Model for a Celo Composer framework."""
+
+    name: str = Field(description="Framework name")
+    description: str = Field(description="Framework description")
+    documentation_url: str = Field(description="Link to framework documentation")
+
+
+class CeloComposerProject(BaseModel):
+    """Model for a Celo Composer project configuration."""
+
+    name: str = Field(description="Project name")
+    owner: str = Field(description="Project owner name")
+    include_hardhat: bool = Field(description="Whether to include Hardhat in the project")
+    template: str = Field(description="Template to use (Minipay, Valora, or Social Connect)")
+    description: str | None = Field(default=None, description="Project description")
+
+
+class CeloComposerCommand(BaseModel):
+    """Model for Celo Composer CLI commands."""
+
+    command: str = Field(description="The CLI command to execute")
+    description: str = Field(description="Description of what the command does")
+    flags: dict[str, str] = Field(default_factory=dict, description="Available flags and their descriptions")
+
+
+class CeloComposerGuide(BaseModel):
+    """Model for Celo Composer usage guides."""
+
+    title: str = Field(description="Guide title")
+    description: str = Field(description="Guide description")
+    steps: list[str] = Field(description="Step-by-step instructions")
+    commands: list[str] = Field(default_factory=list, description="Commands to run")
+    notes: list[str] = Field(default_factory=list, description="Additional notes and tips")

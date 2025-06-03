@@ -9,7 +9,16 @@ from mcp.server import Server
 from mcp.server.stdio import stdio_server
 from mcp.types import TextContent, Tool
 
-from .components.data import CATEGORIES, COMPONENTS, INSTALLATION_GUIDES
+from .components.data import (
+    CATEGORIES,
+    COMPONENTS,
+    INSTALLATION_GUIDES,
+    CELO_COMPOSER_TEMPLATES,
+    CELO_COMPOSER_FRAMEWORKS,
+    CELO_COMPOSER_COMMANDS,
+    CELO_COMPOSER_GUIDES,
+    CELO_COMPOSER_INTEGRATION_GUIDE,
+)
 from .components.models import (
     Component,
     ComponentSearchResult,
@@ -91,6 +100,18 @@ def get_component_by_name(name: str) -> Component | None:
 def get_components_by_category(category: str) -> list[Component]:
     """Get all components in a specific category."""
     return [comp for comp in COMPONENTS if comp.category.lower() == category.lower()]
+
+
+def filter_unsupported_props(component: Component) -> Component:
+    """Filter out unsupported props like className if the component doesn't support them."""
+    if not component.supports_className:
+        # Create a new component with filtered props
+        filtered_props = [prop for prop in component.props if prop.name != "className"]
+        # Create a copy of the component with filtered props
+        component_dict = component.model_dump()
+        component_dict["props"] = [prop.model_dump() for prop in filtered_props]
+        return Component(**component_dict)
+    return component
 
 
 @server.list_tools()
@@ -221,6 +242,115 @@ async def list_tools() -> list[Tool]:
                 "required": ["category"],
             },
         ),
+        # Celo Composer Tools
+        Tool(
+            name="list_celo_composer_templates",
+            description=(
+                "List all available Celo Composer templates with their descriptions, "
+                "use cases, and features. Templates provide different starting points for dApp development."
+            ),
+            inputSchema={"type": "object", "properties": {}, "required": []},
+        ),
+        Tool(
+            name="get_celo_composer_template",
+            description=(
+                "Get detailed information about a specific Celo Composer template, "
+                "including use cases, features, and documentation links."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "template_name": {
+                        "type": "string",
+                        "description": "The name of the template (e.g., 'Minipay', 'Valora', 'Social Connect')",
+                    }
+                },
+                "required": ["template_name"],
+            },
+        ),
+        Tool(
+            name="list_celo_composer_frameworks",
+            description=(
+                "List supported frameworks in Celo Composer, including React/Next.js and Hardhat "
+                "with their descriptions and documentation links."
+            ),
+            inputSchema={"type": "object", "properties": {}, "required": []},
+        ),
+        Tool(
+            name="get_celo_composer_commands",
+            description=(
+                "Get available Celo Composer CLI commands with their descriptions, "
+                "flags, and usage examples for creating projects."
+            ),
+            inputSchema={"type": "object", "properties": {}, "required": []},
+        ),
+        Tool(
+            name="get_celo_composer_guide",
+            description=(
+                "Get step-by-step guides for various Celo Composer tasks such as "
+                "project creation, deployment, and development setup."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "guide_type": {
+                        "type": "string",
+                        "enum": [
+                            "quick-start",
+                            "smart-contract-deployment",
+                            "local-development",
+                            "ui-components",
+                            "deployment",
+                        ],
+                        "description": (
+                            "Type of guide to retrieve: 'quick-start' for getting started, "
+                            "'smart-contract-deployment' for deploying contracts, 'local-development' for dev setup, "
+                            "'ui-components' for adding UI components, 'deployment' for Vercel deployment"
+                        ),
+                    }
+                },
+                "required": ["guide_type"],
+            },
+        ),
+        Tool(
+            name="get_integration_guide",
+            description=(
+                "Get a comprehensive guide on how to integrate Composer Kit components "
+                "with Celo Composer projects for rapid dApp development."
+            ),
+            inputSchema={"type": "object", "properties": {}, "required": []},
+        ),
+        Tool(
+            name="create_celo_composer_project",
+            description=(
+                "Generate the complete command to create a new Celo Composer project "
+                "with specified configuration. Returns the CLI command to execute."
+            ),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "project_name": {
+                        "type": "string",
+                        "description": "Name of the project (will be converted to kebab-case)",
+                    },
+                    "owner": {
+                        "type": "string",
+                        "description": "Project owner name",
+                    },
+                    "include_hardhat": {
+                        "type": "boolean",
+                        "description": "Whether to include Hardhat in the project",
+                        "default": True,
+                    },
+                    "template": {
+                        "type": "string",
+                        "enum": ["Minipay", "Valora", "Social Connect"],
+                        "description": "Template to use for the project",
+                    },
+                },
+                "required": ["project_name", "owner", "template"],
+            },
+        ),
     ]
 
 
@@ -229,10 +359,13 @@ async def call_tool(name: str, arguments: dict[str, Any]) -> list[TextContent]:
     """Handle tool calls."""
     try:
         if name == "list_components":
+            # Filter all components to remove unsupported props
+            filtered_components = [filter_unsupported_props(comp) for comp in COMPONENTS]
+
             response = ComponentsResponse(
-                components=COMPONENTS,
+                components=filtered_components,
                 categories=CATEGORIES,
-                total_count=len(COMPONENTS),
+                total_count=len(filtered_components),
             )
             return [
                 TextContent(
@@ -253,10 +386,13 @@ async def call_tool(name: str, arguments: dict[str, Any]) -> list[TextContent]:
                     )
                 ]
 
+            # Filter out unsupported props like className
+            filtered_component = filter_unsupported_props(component)
+
             return [
                 TextContent(
                     type="text",
-                    text=json.dumps(component.model_dump(), indent=2),
+                    text=json.dumps(filtered_component.model_dump(), indent=2),
                 )
             ]
 
@@ -305,10 +441,18 @@ async def call_tool(name: str, arguments: dict[str, Any]) -> list[TextContent]:
                     )
                 ]
 
+            # Filter components in search results to remove unsupported props
+            filtered_results = []
+            for result in results:
+                filtered_component = filter_unsupported_props(result.component)
+                result_dict = result.model_dump()
+                result_dict["component"] = filtered_component.model_dump()
+                filtered_results.append(result_dict)
+
             return [
                 TextContent(
                     type="text",
-                    text=json.dumps([result.model_dump() for result in results], indent=2),
+                    text=json.dumps(filtered_results, indent=2),
                 )
             ]
 
@@ -324,10 +468,13 @@ async def call_tool(name: str, arguments: dict[str, Any]) -> list[TextContent]:
                     )
                 ]
 
+            # Filter out unsupported props like className
+            filtered_component = filter_unsupported_props(component)
+
             return [
                 TextContent(
                     type="text",
-                    text=json.dumps([prop.model_dump() for prop in component.props], indent=2),
+                    text=json.dumps([prop.model_dump() for prop in filtered_component.props], indent=2),
                 )
             ]
 
@@ -362,10 +509,143 @@ async def call_tool(name: str, arguments: dict[str, Any]) -> list[TextContent]:
                     )
                 ]
 
+            # Filter components to remove unsupported props
+            filtered_components = [filter_unsupported_props(comp) for comp in components]
+
             return [
                 TextContent(
                     type="text",
-                    text=json.dumps([comp.model_dump() for comp in components], indent=2),
+                    text=json.dumps([comp.model_dump() for comp in filtered_components], indent=2),
+                )
+            ]
+
+        # Celo Composer tool handlers
+        elif name == "list_celo_composer_templates":
+            return [
+                TextContent(
+                    type="text",
+                    text=json.dumps([t.model_dump() for t in CELO_COMPOSER_TEMPLATES], indent=2),
+                )
+            ]
+
+        elif name == "get_celo_composer_template":
+            template_name = arguments["template_name"]
+            template = next((t for t in CELO_COMPOSER_TEMPLATES if t.name == template_name), None)
+
+            if not template:
+                available_templates = ", ".join([t.name for t in CELO_COMPOSER_TEMPLATES])
+                return [
+                    TextContent(
+                        type="text",
+                        text=f"Template '{template_name}' not found. Available templates: {available_templates}",
+                    )
+                ]
+
+            return [
+                TextContent(
+                    type="text",
+                    text=json.dumps(template.model_dump(), indent=2),
+                )
+            ]
+
+        elif name == "list_celo_composer_frameworks":
+            return [
+                TextContent(
+                    type="text",
+                    text=json.dumps([f.model_dump() for f in CELO_COMPOSER_FRAMEWORKS], indent=2),
+                )
+            ]
+
+        elif name == "get_celo_composer_commands":
+            return [
+                TextContent(
+                    type="text",
+                    text=json.dumps([c.model_dump() for c in CELO_COMPOSER_COMMANDS], indent=2),
+                )
+            ]
+
+        elif name == "get_celo_composer_guide":
+            guide_type = arguments["guide_type"]
+
+            # Map guide types to actual guide titles
+            guide_map = {
+                "quick-start": "Quick Start Guide",
+                "smart-contract-deployment": "Smart Contract Deployment",
+                "local-development": "Local Development Setup",
+                "ui-components": "Adding UI Components",
+                "deployment": "Deployment with Vercel",
+            }
+
+            guide_title = guide_map.get(guide_type)
+            if not guide_title:
+                return [
+                    TextContent(
+                        type="text",
+                        text=f"Guide type '{guide_type}' not found. Available types: {', '.join(guide_map.keys())}",
+                    )
+                ]
+
+            guide = next((g for g in CELO_COMPOSER_GUIDES if g.title == guide_title), None)
+
+            if not guide:
+                return [
+                    TextContent(
+                        type="text",
+                        text=f"Guide '{guide_type}' not found.",
+                    )
+                ]
+
+            return [
+                TextContent(
+                    type="text",
+                    text=json.dumps(guide.model_dump(), indent=2),
+                )
+            ]
+
+        elif name == "get_integration_guide":
+            return [
+                TextContent(
+                    type="text",
+                    text=json.dumps(CELO_COMPOSER_INTEGRATION_GUIDE.model_dump(), indent=2),
+                )
+            ]
+
+        elif name == "create_celo_composer_project":
+            project_name = arguments["project_name"]
+            owner = arguments["owner"]
+            include_hardhat = arguments.get("include_hardhat", True)
+            template = arguments["template"]
+
+            # Validate template exists
+            template_obj = next((t for t in CELO_COMPOSER_TEMPLATES if t.name == template), None)
+            if not template_obj:
+                available_templates = ", ".join([t.name for t in CELO_COMPOSER_TEMPLATES])
+                return [
+                    TextContent(
+                        type="text",
+                        text=f"Template '{template}' not found. Available templates: {available_templates}",
+                    )
+                ]
+
+            # Build the command
+            command = f'npx @celo/celo-composer@latest create --name "{project_name}" --owner "{owner}" --template "{template}"'
+
+            if include_hardhat:
+                command += " --hardhat"
+            else:
+                command += " --no-hardhat"
+
+            response = {
+                "command": command,
+                "description": f"Create a new Celo Composer project with {template} template",
+                "next_steps": [f"cd {project_name}", "yarn install", "yarn dev"],
+                "template_info": template_obj.model_dump(),
+            }
+
+            return [
+                TextContent(
+                    type="text",
+                    text=json.dumps(response, indent=2),
                 )
             ]
 

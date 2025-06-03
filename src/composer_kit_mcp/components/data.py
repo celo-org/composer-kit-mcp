@@ -1,13 +1,22 @@
 """Hardcoded Composer Kit component data."""
 
-from .models import Component, ComponentExample, ComponentProp, InstallationGuide
+from .models import (
+    Component,
+    ComponentExample,
+    ComponentProp,
+    InstallationGuide,
+    CeloComposerTemplate,
+    CeloComposerFramework,
+    CeloComposerCommand,
+    CeloComposerGuide,
+)
 
 # Installation guides for different package managers
 INSTALLATION_GUIDES = {
     "npm": InstallationGuide(
         package_manager="npm",
         install_command="npm install @composer-kit/ui",
-        setup_code="""import { ComposerKitProvider } from "@composer-kit/ui";
+        setup_code="""import { ComposerKitProvider } from "@composer-kit/ui/core";
 
 function App() {
   return <ComposerKitProvider>{/* Your app content */}</ComposerKitProvider>;
@@ -15,12 +24,13 @@ function App() {
         additional_steps=[
             "Configure the ComposerKitProvider in your app",
             "Import components as needed from their specific paths",
+            'Ensure your tsconfig.json has "moduleResolution": "bundler" for proper module resolution',
         ],
     ),
     "yarn": InstallationGuide(
         package_manager="yarn",
         install_command="yarn add @composer-kit/ui",
-        setup_code="""import { ComposerKitProvider } from "@composer-kit/ui";
+        setup_code="""import { ComposerKitProvider } from "@composer-kit/ui/core";
 
 function App() {
   return <ComposerKitProvider>{/* Your app content */}</ComposerKitProvider>;
@@ -28,12 +38,13 @@ function App() {
         additional_steps=[
             "Configure the ComposerKitProvider in your app",
             "Import components as needed from their specific paths",
+            'Ensure your tsconfig.json has "moduleResolution": "bundler" for proper module resolution',
         ],
     ),
     "pnpm": InstallationGuide(
         package_manager="pnpm",
         install_command="pnpm add @composer-kit/ui",
-        setup_code="""import { ComposerKitProvider } from "@composer-kit/ui";
+        setup_code="""import { ComposerKitProvider } from "@composer-kit/ui/core";
 
 function App() {
   return <ComposerKitProvider>{/* Your app content */}</ComposerKitProvider>;
@@ -41,12 +52,13 @@ function App() {
         additional_steps=[
             "Configure the ComposerKitProvider in your app",
             "Import components as needed from their specific paths",
+            'Ensure your tsconfig.json has "moduleResolution": "bundler" for proper module resolution',
         ],
     ),
     "bun": InstallationGuide(
         package_manager="bun",
         install_command="bun add @composer-kit/ui",
-        setup_code="""import { ComposerKitProvider } from "@composer-kit/ui";
+        setup_code="""import { ComposerKitProvider } from "@composer-kit/ui/core";
 
 function App() {
   return <ComposerKitProvider>{/* Your app content */}</ComposerKitProvider>;
@@ -54,6 +66,7 @@ function App() {
         additional_steps=[
             "Configure the ComposerKitProvider in your app",
             "Import components as needed from their specific paths",
+            'Ensure your tsconfig.json has "moduleResolution": "bundler" for proper module resolution',
         ],
     ),
 }
@@ -136,6 +149,7 @@ export const Basic = () => {
         detailed_description="The Balance component is designed to display and manage token balances seamlessly.",
         import_path="@composer-kit/ui/balance",
         subcomponents=["BalanceInput", "BalanceOptions", "BalanceText"],
+        supports_className=False,
         props=[
             ComponentProp(
                 name="children",
@@ -461,17 +475,13 @@ export const PaymentBasic = () => {
         detailed_description="The Swap component allows users to exchange tokens seamlessly with a simple interface.",
         import_path="@composer-kit/ui/swap",
         subcomponents=["SwapButton", "SwapHeader", "SwapToggle", "SwapToken"],
+        supports_className=False,
         props=[
             ComponentProp(
                 name="children",
                 type="React.ReactNode",
                 description="The child components of the Swap container.",
                 required=True,
-            ),
-            ComponentProp(
-                name="className",
-                type="string",
-                description="Optional additional class names.",
             ),
             ComponentProp(
                 name="swapableTokens",
@@ -596,6 +606,7 @@ export const TokenSelectBasic = () => {
         detailed_description="The Transaction component facilitates blockchain transactions with a simple interface, providing built-in status tracking and error handling.",
         import_path="@composer-kit/ui/transaction",
         subcomponents=["TransactionButton", "TransactionStatus"],
+        supports_className=False,
         props=[
             ComponentProp(
                 name="chainId",
@@ -749,3 +760,183 @@ CATEGORIES = [
     "Token Management",
     "NFT Components",
 ]
+
+# Celo Composer Data
+
+CELO_COMPOSER_TEMPLATES = [
+    CeloComposerTemplate(
+        name="Minipay",
+        description="Pre-configured for building a mini-payment dApp on Celo",
+        use_cases=[
+            "Mobile-first payment applications",
+            "Micro-transactions",
+            "P2P payments",
+            "Mobile wallet integration",
+        ],
+        features=["Mobile-optimized UI", "Payment flow components", "Celo integration", "PWA support"],
+        documentation_url="https://docs.celo.org/developer/build-on-minipay/overview",
+    ),
+    CeloComposerTemplate(
+        name="Valora",
+        description="Designed for easy Valora wallet integration",
+        use_cases=["Valora wallet integration", "Social payments", "DeFi applications", "Wallet-centric dApps"],
+        features=["Valora wallet connectivity", "Social features", "DeFi components", "Multi-token support"],
+        documentation_url="https://docs.valora.xyz/",
+    ),
+    CeloComposerTemplate(
+        name="Social Connect",
+        description="Template for building applications with social identity features",
+        use_cases=[
+            "Social identity verification",
+            "Phone number authentication",
+            "Social recovery",
+            "Identity-based applications",
+        ],
+        features=[
+            "Social Connect integration",
+            "Identity verification",
+            "Phone number mapping",
+            "Privacy-preserving authentication",
+        ],
+        documentation_url="https://docs.celo.org/protocol/identity",
+    ),
+]
+
+CELO_COMPOSER_FRAMEWORKS = [
+    CeloComposerFramework(
+        name="React/Next.js",
+        description="Supports web and PWA applications with major crypto wallet compatibility",
+        documentation_url="https://nextjs.org/docs",
+    ),
+    CeloComposerFramework(
+        name="Hardhat",
+        description="Powerful tool for smart contract development that works with various Ethereum dev tools",
+        documentation_url="https://hardhat.org/hardhat-runner/docs/getting-started",
+    ),
+]
+
+CELO_COMPOSER_COMMANDS = [
+    CeloComposerCommand(
+        command="npx @celo/celo-composer@latest create",
+        description="Create a new Celo Composer project interactively",
+        flags={},
+    ),
+    CeloComposerCommand(
+        command="npx @celo/celo-composer@latest create --name <project-name> --owner <owner-name> --hardhat --template <template>",
+        description="Create a new Celo Composer project with inline flags",
+        flags={
+            "--name, -n": "Name of the project (will be converted to kebab-case)",
+            "--owner, -o": "Project owner name",
+            "--hardhat": "Include Hardhat in the project",
+            "--no-hardhat": "Exclude Hardhat from the project",
+            "--template, -t": "Template to use (Minipay, Valora, or Social Connect)",
+        },
+    ),
+]
+
+CELO_COMPOSER_GUIDES = [
+    CeloComposerGuide(
+        title="Quick Start Guide",
+        description="Get started with Celo Composer by creating your first project",
+        steps=[
+            "Install Node.js (v20 or higher) and Git (v2.38 or higher)",
+            "Run the Celo Composer CLI tool",
+            "Choose your project configuration",
+            "Install dependencies",
+            "Start development",
+        ],
+        commands=["npx @celo/celo-composer@latest create", "cd <project-name>", "yarn install", "yarn dev"],
+        notes=[
+            "Use interactive mode for the best experience",
+            "Ensure you have the required Node.js and Git versions",
+            "Templates provide different starting points for various use cases",
+        ],
+    ),
+    CeloComposerGuide(
+        title="Smart Contract Deployment",
+        description="Deploy smart contracts using Hardhat integration",
+        steps=[
+            "Rename packages/hardhat/.env.template to packages/hardhat/.env",
+            "Add your PRIVATE_KEY to the .env file",
+            "Ensure your wallet has test funds from Celo Faucet",
+            "Deploy the contract to Alfajores testnet",
+        ],
+        commands=[
+            "cp packages/hardhat/.env.template packages/hardhat/.env",
+            "npx hardhat ignition deploy ./ignition/modules/Lock.ts --network alfajores",
+        ],
+        notes=[
+            "Get test funds from https://faucet.celo.org/alfajores",
+            "Never commit your private key to version control",
+            "Use testnet for development and testing",
+        ],
+    ),
+    CeloComposerGuide(
+        title="Local Development Setup",
+        description="Set up your local development environment",
+        steps=[
+            "Rename .env.template to .env in packages/react-app/",
+            "Add your WalletConnect Project ID",
+            "Start the local development server",
+        ],
+        commands=["cp packages/react-app/.env.template packages/react-app/.env", "yarn dev"],
+        notes=[
+            "Get WalletConnect Project ID from https://cloud.walletconnect.com/",
+            "The development server typically runs on http://localhost:3000",
+            "Hot reload is enabled for rapid development",
+        ],
+    ),
+    CeloComposerGuide(
+        title="Adding UI Components",
+        description="Integrate additional UI components using ShadCN",
+        steps=[
+            "Navigate to your project directory",
+            "Install ShadCN components as needed",
+            "Import and use components in your application",
+        ],
+        commands=["npx shadcn-ui@latest add button", "npx shadcn-ui@latest add card"],
+        notes=[
+            "Celo Composer keeps UI components lightweight by default",
+            "ShadCN provides high-quality, customizable components",
+            "Refer to UI Components Guide for detailed instructions",
+        ],
+    ),
+    CeloComposerGuide(
+        title="Deployment with Vercel",
+        description="Deploy your Celo Composer application to Vercel",
+        steps=[
+            "Push your code to a Git repository",
+            "Connect your repository to Vercel",
+            "Configure environment variables",
+            "Deploy your application",
+        ],
+        commands=["git add .", "git commit -m 'Initial commit'", "git push origin main", "vercel --prod"],
+        notes=[
+            "Vercel provides automatic deployments on Git pushes",
+            "Set up environment variables in Vercel dashboard",
+            "Refer to the Deployment Guide for detailed instructions",
+        ],
+    ),
+]
+
+CELO_COMPOSER_INTEGRATION_GUIDE = CeloComposerGuide(
+    title="Integrating Composer Kit with Celo Composer",
+    description="How to add Composer Kit components to a Celo Composer project",
+    steps=[
+        "Create a new Celo Composer project or use an existing one",
+        "Install Composer Kit UI components",
+        "Configure the project for Composer Kit",
+        "Import and use Composer Kit components",
+        "Customize styling and behavior",
+    ],
+    commands=[
+        "npx @celo/celo-composer@latest create",
+        "npm install @composer-kit/ui",
+        "npm install @composer-kit/wallet-connect",
+    ],
+    notes=[
+        "Composer Kit components work seamlessly with Celo Composer projects",
+        "Both tools are designed for building on the Celo blockchain",
+        "Combine templates and components for rapid development",
+    ],
+)

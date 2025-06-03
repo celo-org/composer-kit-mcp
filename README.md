@@ -204,6 +204,43 @@ composer-kit-mcp
    - Get all components in a specific category
    - Parameters: `category` (e.g., 'Core Components', 'Wallet Integration', 'Payment & Transactions')
 
+#### Celo Composer Tools
+
+8. **list_celo_composer_templates**
+
+   - List all available Celo Composer templates with their descriptions, use cases, and features
+   - No parameters required
+
+9. **get_celo_composer_template**
+
+   - Get detailed information about a specific Celo Composer template
+   - Parameters: `template_name` (e.g., 'Minipay', 'Valora', 'Social Connect')
+
+10. **list_celo_composer_frameworks**
+
+    - List supported frameworks in Celo Composer (React/Next.js, Hardhat)
+    - No parameters required
+
+11. **get_celo_composer_commands**
+
+    - Get available Celo Composer CLI commands with flags and usage examples
+    - No parameters required
+
+12. **get_celo_composer_guide**
+
+    - Get step-by-step guides for various Celo Composer tasks
+    - Parameters: `guide_type` ('quick-start', 'smart-contract-deployment', 'local-development', 'ui-components', 'deployment')
+
+13. **get_integration_guide**
+
+    - Get a comprehensive guide on integrating Composer Kit with Celo Composer projects
+    - No parameters required
+
+14. **create_celo_composer_project**
+    - Generate the complete command to create a new Celo Composer project
+    - Parameters: `project_name`, `owner`, `template`, `include_hardhat` (optional, defaults to true)
+    - Returns: Complete CLI command with next steps and template information
+
 ## Available Components
 
 ### Core Components
@@ -244,6 +281,14 @@ composer-kit-mcp
 - **Installation Guides**: Step-by-step setup instructions
 - **Category Organization**: Components organized by functionality
 
+### Celo Composer Integration
+
+- **Template Management**: Access to all Celo Composer templates (Minipay, Valora, Social Connect)
+- **Project Creation**: Generate complete CLI commands for new projects
+- **Framework Support**: Information about React/Next.js and Hardhat integration
+- **Step-by-Step Guides**: Comprehensive guides for project setup, deployment, and development
+- **Integration Documentation**: How to combine Composer Kit components with Celo Composer projects
+
 ### Search and Discovery
 
 - **Semantic Search**: Find components by functionality or use case
@@ -256,18 +301,53 @@ composer-kit-mcp
 - **Advanced Patterns**: Complex usage scenarios
 - **Best Practices**: Recommended implementation patterns
 
+## Celo Composer Templates
+
+### Minipay Template
+
+- **Purpose**: Pre-configured for building mini-payment dApps on Celo
+- **Use Cases**: Mobile-first payment applications, micro-transactions, P2P payments
+- **Features**: Mobile-optimized UI, payment flow components, Celo integration, PWA support
+
+### Valora Template
+
+- **Purpose**: Designed for easy Valora wallet integration
+- **Use Cases**: Valora wallet integration, social payments, DeFi applications
+- **Features**: Valora wallet connectivity, social features, DeFi components, multi-token support
+
+### Social Connect Template
+
+- **Purpose**: Template for building applications with social identity features
+- **Use Cases**: Social identity verification, phone number authentication, social recovery
+- **Features**: Social Connect integration, identity verification, phone number mapping
+
+## Integration Workflow
+
+1. **Choose a Template**: Select from Minipay, Valora, or Social Connect based on your use case
+2. **Create Project**: Use the `create_celo_composer_project` tool to generate the setup command
+3. **Install Dependencies**: Set up the project with the generated command
+4. **Add Composer Kit**: Install Composer Kit components for enhanced UI
+5. **Develop**: Use step-by-step guides for deployment and development setup
+
 ## Architecture
 
-The server provides access to hardcoded Composer Kit component data:
+The server provides access to hardcoded Composer Kit component data and Celo Composer information:
 
 ```
 src/composer_kit_mcp/
 ├── components/         # Component data and models
-│   ├── data.py        # Hardcoded component information
-│   └── models.py      # Pydantic models for components
-├── server.py          # Main MCP server
+│   ├── data.py        # Hardcoded component and Celo Composer information
+│   └── models.py      # Pydantic models for components and Celo Composer
+├── server.py          # Main MCP server with Composer Kit and Celo Composer tools
 └── __init__.py        # Package initialization
 ```
+
+### Data Structure
+
+- **Composer Kit Components**: Complete component library with props, examples, and usage information
+- **Celo Composer Templates**: Template configurations with use cases and features
+- **Celo Composer Guides**: Step-by-step instructions for common tasks
+- **Integration Documentation**: How to combine both tools for rapid dApp development
 
 ## Component Categories
 
