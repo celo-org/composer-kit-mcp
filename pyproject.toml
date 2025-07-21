@@ -1,7 +1,7 @@
 [project]
 name = "composer_kit_mcp"
-version = "0.3.0"
-description = "A Model Context Protocol (MCP) server for Composer Kit UI components documentation and examples"
+version = "0.4.0"
+description = "A Model Context Protocol (MCP) server for Composer Kit UI components and Celo Composer project creation"
 readme = "README.md"
 authors = [
     { name = "viral-sangani", email = "viral.sangani2011@gmail.com" }
@@ -11,7 +11,7 @@ dependencies = [
     "mcp>=1.2.0",
     "pydantic>=2.0.0",
 ]
-keywords = ["mcp", "composer-kit", "ui", "components", "react", "web3", "celo"]
+keywords = ["mcp", "composer-kit", "ui", "components", "react", "web3", "celo", "celo-composer", "dapp"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
