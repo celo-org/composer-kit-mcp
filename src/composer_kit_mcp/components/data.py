@@ -1,14 +1,14 @@
 """Hardcoded Composer Kit component data."""
 
 from .models import (
+    CeloComposerCommand,
+    CeloComposerFramework,
+    CeloComposerGuide,
+    CeloComposerTemplate,
     Component,
     ComponentExample,
     ComponentProp,
     InstallationGuide,
-    CeloComposerTemplate,
-    CeloComposerFramework,
-    CeloComposerCommand,
-    CeloComposerGuide,
 )
 
 # Installation guides for different package managers
