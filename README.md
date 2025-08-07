@@ -214,7 +214,7 @@ composer-kit-mcp
 9. **get_celo_composer_template**
 
    - Get detailed information about a specific Celo Composer template
-   - Parameters: `template_name` (e.g., 'Minipay', 'Valora', 'Social Connect')
+   - Parameters: `template_name`
 
 10. **list_celo_composer_frameworks**
 
@@ -283,7 +283,7 @@ composer-kit-mcp
 
 ### Celo Composer Integration
 
-- **Template Management**: Access to all Celo Composer templates (Minipay, Valora, Social Connect)
+- **Template Management**: Access to all Celo Composer templates
 - **Project Creation**: Generate complete CLI commands for new projects
 - **Framework Support**: Information about React/Next.js and Hardhat integration
 - **Step-by-Step Guides**: Comprehensive guides for project setup, deployment, and development
@@ -315,15 +315,9 @@ composer-kit-mcp
 - **Use Cases**: Valora wallet integration, social payments, DeFi applications
 - **Features**: Valora wallet connectivity, social features, DeFi components, multi-token support
 
-### Social Connect Template
-
-- **Purpose**: Template for building applications with social identity features
-- **Use Cases**: Social identity verification, phone number authentication, social recovery
-- **Features**: Social Connect integration, identity verification, phone number mapping
-
 ## Integration Workflow
 
-1. **Choose a Template**: Select from Minipay, Valora, or Social Connect based on your use case
+1. **Choose a Template**: Select from Minipay or Valora based on your use case
 2. **Create Project**: Use the `create_celo_composer_project` tool to generate the setup command
 3. **Install Dependencies**: Set up the project with the generated command
 4. **Add Composer Kit**: Install Composer Kit components for enhanced UI

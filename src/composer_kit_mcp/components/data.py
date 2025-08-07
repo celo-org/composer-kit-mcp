@@ -783,23 +783,6 @@ CELO_COMPOSER_TEMPLATES = [
         features=["Valora wallet connectivity", "Social features", "DeFi components", "Multi-token support"],
         documentation_url="https://docs.valora.xyz/",
     ),
-    CeloComposerTemplate(
-        name="Social Connect",
-        description="Template for building applications with social identity features",
-        use_cases=[
-            "Social identity verification",
-            "Phone number authentication",
-            "Social recovery",
-            "Identity-based applications",
-        ],
-        features=[
-            "Social Connect integration",
-            "Identity verification",
-            "Phone number mapping",
-            "Privacy-preserving authentication",
-        ],
-        documentation_url="https://docs.celo.org/protocol/identity",
-    ),
 ]
 
 CELO_COMPOSER_FRAMEWORKS = [
@@ -829,7 +812,7 @@ CELO_COMPOSER_COMMANDS = [
             "--owner, -o": "Project owner name",
             "--hardhat": "Include Hardhat in the project",
             "--no-hardhat": "Exclude Hardhat from the project",
-            "--template, -t": "Template to use (Minipay, Valora, or Social Connect)",
+            "--template, -t": "Template to use",
         },
     ),
 ]

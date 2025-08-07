@@ -89,7 +89,7 @@ class CeloComposerProject(BaseModel):
     name: str = Field(description="Project name")
     owner: str = Field(description="Project owner name")
     include_hardhat: bool = Field(description="Whether to include Hardhat in the project")
-    template: str = Field(description="Template to use (Minipay, Valora, or Social Connect)")
+    template: str = Field(description="Template to use ")
     description: str | None = Field(default=None, description="Project description")
 
 
