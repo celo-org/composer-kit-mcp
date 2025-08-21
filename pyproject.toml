@@ -1,6 +1,6 @@
 [project]
 name = "composer_kit_mcp"
-version = "0.7.0"
+version = "0.7.1"
 description = "A Model Context Protocol (MCP) server for Composer Kit UI components and Celo Composer project creation"
 readme = "README.md"
 authors = [
