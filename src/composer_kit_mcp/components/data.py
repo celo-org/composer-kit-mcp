@@ -783,6 +783,28 @@ CELO_COMPOSER_TEMPLATES = [
         features=["Valora wallet connectivity", "Social features", "DeFi components", "Multi-token support"],
         documentation_url="https://docs.valora.xyz/",
     ),
+    # New templates aligned with `celo-composer create --help`
+    CeloComposerTemplate(
+        name="Basic",
+        description="Starter template with minimal setup to build on Celo",
+        use_cases=["Hello world dApps", "Learning Celo", "Custom setups"],
+        features=["Minimal dependencies", "Clean project structure", "Ready-to-extend"],
+        documentation_url="https://github.com/celo-org/celo-composer",
+    ),
+    CeloComposerTemplate(
+        name="Farcaster Miniapp",
+        description="Template for building Farcaster miniapps that interact with Celo",
+        use_cases=["Social miniapps", "Frames integrations", "Mobile-first experiences"],
+        features=["Farcaster frame-ready scaffolding", "Celo wallet interactions", "Example components"],
+        documentation_url=None,
+    ),
+    CeloComposerTemplate(
+        name="AI Chat",
+        description="AI-powered chat dApp scaffold integrated with Celo",
+        use_cases=["Conversational dApps", "Agentic flows", "Support bots with onchain actions"],
+        features=["Chat UI", "API integration hooks", "Transaction triggers"],
+        documentation_url=None,
+    ),
 ]
 
 CELO_COMPOSER_FRAMEWORKS = [
@@ -805,14 +827,15 @@ CELO_COMPOSER_COMMANDS = [
         flags={},
     ),
     CeloComposerCommand(
-        command="npx @celo/celo-composer@latest create --name <project-name> --owner <owner-name> --hardhat --template <template>",
+        command="npx @celo/celo-composer@latest create [options] [project-name]",
         description="Create a new Celo Composer project with inline flags",
         flags={
-            "--name, -n": "Name of the project (will be converted to kebab-case)",
-            "--owner, -o": "Project owner name",
-            "--hardhat": "Include Hardhat in the project",
-            "--no-hardhat": "Exclude Hardhat from the project",
-            "--template, -t": "Template to use",
+            "-d, --description <description>": "Project description",
+            "-t, --template <type>": "Template type (basic, farcaster-miniapp, minipay, ai-chat)",
+            "--wallet-provider <provider>": "Wallet provider (rainbowkit, thirdweb, none)",
+            "-c, --contracts <framework>": "Smart contract framework (hardhat, foundry, none)",
+            "--skip-install": "Skip package installation",
+            "-y, --yes": "Skip all prompts and use defaults",
         },
     ),
 ]
